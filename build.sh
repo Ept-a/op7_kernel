@@ -1,8 +1,17 @@
 #!/bin/bash
 
+
+
+
+# The defult directory where the kernel should be placed
+KERNEL_DIR="$(pwd)"
+
+
+
+# path
 export ARCH=arm64
-export CROSS_COMPILE=/home/a/test/tc/tc64/bin/aarch64-linux-gnu-
-export CROSS_COMPILE_ARM32=/home/a/test/tc/tc32/bin/arm-none-eabi-
+export CROSS_COMPILE=$KERNEL_DIR/tc/tc64/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=$KERNEL_DIR/tc/tc32/bin/arm-none-eabi-
 export KJOBS="$((`grep -c '^processor' /proc/cpuinfo` * 2))"
 VERSION="$(cat arch/arm64/configs/sm8150-perf_defconfig | grep "CONFIG_LOCALVERSION\=" | sed -r 's/.*"(.+)".*/\1/' | sed 's/^.//')"
 
