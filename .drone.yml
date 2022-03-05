@@ -11,12 +11,13 @@ clone:
 
 steps:
   - name: build
-    image: alk3p/archlinux:kernel-devel
+    image: archlinux:base-devel
     environment:
+      patched_glibc: glibc-linux4-2.33-5-x86_64.pkg.tar.zst
       KBUILD_BUILD_USER: misaka
       KBUILD_BUILD_HOST: tp-workstation
     commands:
-      - git clone https://github.com/alk3p/build-scripts /drone/build-tools/build-scripts --branch op7-r --depth 1
-      - git clone https://github.com/alk3p/anykernel3 /drone/build-tools/anykernel --branch op7-r --depth 1
+      - curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && bsdtar -C / -xvf "$patched_glibc"
       - cd /drone/src
-      - bash ../build-tools/build-scripts/build.sh upload
+      - pacman -Sy bc cpio libyaml lib32-gcc-libs aarch64-linux-gnu-gcc arm-none-eabi-gcc --noconfirm
+      - bash ./build.sh upload
