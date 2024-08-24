@@ -195,8 +195,9 @@ static void sched_boost_enable(int type)
 	next_boost = sched_effective_boost();
 	if (next_boost == prev_boost)
 		return;
-
+#ifdef CONFIG_SCHED_WALT
 	sched_boosts[prev_boost].exit();
+#endif
 	sched_boosts[next_boost].enter();
 }
 
@@ -277,7 +278,10 @@ int sched_boost_handler(struct ctl_table *table, int write,
 
 	if (ret || !write)
 		goto done;
-
+	if (*data == 3 || *data == -3) {
+		sysctl_sched_boost = sched_boost_type;
+		goto done;
+	}
 	if (verify_boost_params(*data))
 		_sched_set_boost(*data);
 	else

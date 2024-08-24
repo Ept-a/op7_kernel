@@ -170,7 +170,7 @@ static int bcl_set_ibat(void *data, int low, int high)
 	int16_t addr;
 	struct bcl_peripheral_data *bat_data =
 		(struct bcl_peripheral_data *)data;
-
+	bool irq_enabled = false;
 	thresh_value = high;
 	if (bat_data->trip_temp == thresh_value)
 		return 0;
