@@ -2068,7 +2068,7 @@ static DEVICE_ATTR(tp_fw_update, 0644, sec_update_fw_show, sec_update_fw_store);
 	};
 
 GESTURE_ATTR(single_tap, SingleTap_enable);
-GESTURE_ATTR(double_tap, DouTap_enable);
+GESTURE_ATTR(chen_double_tap, DouTap_enable);
 GESTURE_ATTR(down_arrow, UpVee_enable);
 GESTURE_ATTR(left_arrow, LeftVee_enable);
 GESTURE_ATTR(right_arrow, RightVee_enable);
@@ -2131,7 +2131,7 @@ static int init_touchpanel_proc(struct touchpanel_data *ts)
 				 __func__, __LINE__);
 		}
         	CREATE_GESTURE_NODE(single_tap);
-        	CREATE_GESTURE_NODE(double_tap);
+        	CREATE_GESTURE_NODE(chen_double_tap);
         	CREATE_GESTURE_NODE(down_arrow);
         	CREATE_GESTURE_NODE(left_arrow);
         	CREATE_GESTURE_NODE(right_arrow);

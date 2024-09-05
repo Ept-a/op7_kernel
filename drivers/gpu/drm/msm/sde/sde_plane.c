@@ -4412,7 +4412,7 @@ static void _sde_plane_install_properties(struct drm_plane *plane,
 	}
 
 	psde->catalog = catalog;
-	
+
 	if (sde_is_custom_client()) {
 		if (catalog->mixer_count &&
 				catalog->mixer[0].sblk->maxblendstages) {
@@ -4872,6 +4872,8 @@ static int sde_plane_atomic_set_property(struct drm_plane *plane,
 {
 	struct sde_plane *psde = plane ? to_sde_plane(plane) : NULL;
 	struct sde_plane_state *pstate;
+	struct drm_property *fod_property;
+	uint64_t fod_val = 0;
 	int idx, ret = -EINVAL;
 
 	SDE_DEBUG_PLANE(psde, "\n");
