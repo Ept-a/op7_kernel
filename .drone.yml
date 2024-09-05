@@ -1,0 +1,24 @@
+---
+kind: pipeline
+name: icekramel CI
+
+platform:
+  os: linux
+  arch: amd64
+
+clone:
+  depth: 1
+
+steps:
+  - name: build
+    image: archlinux:base-devel
+    environment:
+      patched_glibc: glibc-linux4-2.33-5-x86_64.pkg.tar.zst
+    commands:
+      - curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && bsdtar -C / -xvf "$patched_glibc"
+      - cd /drone/src
+      - pacman -Sy bc curl cpio git libyaml lib32-gcc-libs aarch64-linux-gnu-gcc arm-none-eabi-gcc --noconfirm
+      - git clone https://github.com/alk3p/build-scripts /drone/build-tools/build-scripts --branch op7-r --depth 1
+      - export KBUILD_BUILD_USER=misaka
+      - export KBUILD_BUILD_HOST=tp-workstation
+      - bash ../build-tools/build-scripts/build.sh upload
