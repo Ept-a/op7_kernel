@@ -90,7 +90,7 @@ static char aw8697_ram_name[5][30] = {
 {"aw8697_haptic_172.bin"},
 {"aw8697_haptic_174.bin"},
 };
-static char aw8697_rtp_name[][AW8697_RTP_NAME_MAX] = {
+static char aw8697_rtp_name_orig[][AW8697_RTP_NAME_MAX] = {
 	{"aw8697_rtp.bin"},
 	{"ring_alacrity.bin"},
 	{"ring_amenity.bin"},
@@ -168,6 +168,92 @@ static char aw8697_rtp_name[][AW8697_RTP_NAME_MAX] = {
 	{"alarm_walking_in_the_rain.bin"},
 	{"shuntai24k_rtp.bin"},
 	{"wentai24k_rtp.bin"},
+};
+
+// Add for Flyme
+static char aw8697_rtp_name[][AW8697_RTP_NAME_MAX] = {
+    {"aw8697_rtp.bin"},
+    {"cleanup_ring.bin"},  // 1
+    {"coin_ring.bin"},     // 2
+    {"defalm_ring.bin"},   // 3
+    {"defalm_ring01.bin"}, // 4
+    {"defsim_ring.bin"},   // 5
+    {"mpacc_ring.bin"},    // 6
+    {"plug_usb_ring.bin"}, // 7
+    {"sim_ring00.bin"},    // 8
+    {"sim_ring01.bin"},    // 9
+    {"sim_ring02.bin"},    // 10
+    {"sim_ring03.bin"},    // 11
+    {"sim_ring04.bin"},    // 12
+    {"sim_ring05.bin"},    // 13
+    {"sim_ring06.bin"},    // 14
+    {"sim_ring07.bin"},    // 15
+    {"sim_ring08.bin"},    // 16
+    {"sim_ring09.bin"},    // 17
+    {"sim_ring10.bin"},    // 18
+    {"sim_ring11.bin"},    // 19
+    {"sim_ring12.bin"},    // 20
+    {"sim_ring13.bin"},    // 21
+    {"sim_ring14.bin"},    // 22
+    {"sim_ring15.bin"},    // 23
+    {"sim_ring16.bin"},    // 24
+    {"sim_ring17.bin"},    // 25
+    {"sim_ring18.bin"},    // 26
+    {"sim_ring19.bin"},    // 27
+    {"sim_ring20.bin"},    // 28
+    {"sim_ring21.bin"},    // 29
+    {"sim_ring22.bin"},    // 30
+    {"sim_ring23.bin"},    // 31
+    {"sim_ring24.bin"},    // 32
+    {"sim_ring25.bin"},    // 33
+    {"sim_ring26.bin"},    // 34
+    {"sim_ring27.bin"},    // 35
+    {"sim_ring28.bin"},    // 36
+    {"sim_ring29.bin"},    // 37
+    {"sim_ring30.bin"},    // 38
+    {"sim_ring31.bin"},    // 39
+    {"sim_ring32.bin"},    // 40
+    {"sim_ring33.bin"},    // 41
+    {"sim_ring34.bin"},    // 42
+    {"sim_ring35.bin"},    // 43
+    {"sim_ring36.bin"},    // 44
+    {"sim_ring37.bin"},    // 45
+    {"sim_ring38.bin"},    // 46
+    {"sim_ring39.bin"},    // 47
+    {"sim_ring40.bin"},    // 48
+    {"sms_ring01.bin"},    // 49
+    {"sms_ring02.bin"},    // 50
+    {"sms_ring03.bin"},    // 51
+    {"sms_ring04.bin"},    // 52
+    {"sms_ring05.bin"},    // 53
+    {"sms_ring06.bin"},    // 54
+    {"sms_ring07.bin"},    // 55
+    {"sms_ring08.bin"},    // 56
+    {"sms_ring09.bin"},    // 57
+    {"sms_ring10.bin"},    // 58
+    {"sms_ring11.bin"},    // 59
+    {"sms_ring12.bin"},    // 60
+    {"sms_ring13.bin"},    // 61
+    {"sms_ring14.bin"},    // 62
+    {"sms_ring15.bin"},    // 63
+    {"sms_ring16.bin"},    // 64
+    {"sms_ring17.bin"},    // 65
+    {"sms_ring18.bin"},    // 66
+    {"sms_ring19.bin"},    // 67
+    {"sms_ring20.bin"},    // 68
+    {"sms_ring21.bin"},    // 69
+    {"sms_ring22.bin"},    // 70
+    {"sms_ring23.bin"},    // 71
+    {"sms_ring24.bin"},    // 72
+    {"sms_ring25.bin"},    // 73
+    {"sms_ring26.bin"},    // 74
+    {"sms_ring27.bin"},    // 75
+    {"sms_ring28.bin"},    // 76
+    {"sms_ring29.bin"},    // 77
+    {"sms_ring30.bin"},    // 78
+    {"sms_ring31.bin"},    // 79
+    {"sms_ring32.bin"},    // 80
+    {"soft_alarm.bin"},    // 81
 };
 
 struct aw8697_container *aw8697_rtp;
@@ -4953,6 +5039,41 @@ static ssize_t aw8697_haptic_audio_hap_cnt_max_outside_tz_store(struct device *d
     return count;
 }
 
+static ssize_t aw8697_waveform_index_show(struct device *dev, struct device_attribute *attr,
+                char *buf)
+{
+    return 0;
+}
+
+static ssize_t aw8697_waveform_index_store(struct device *dev, struct device_attribute *attr,
+                const char *buf, size_t count)
+{
+#ifdef TIMED_OUTPUT
+    struct timed_output_dev *to_dev = dev_get_drvdata(dev);
+    struct aw8697 *aw8697 = container_of(to_dev, struct aw8697, to_dev);
+#else
+    struct led_classdev *cdev = dev_get_drvdata(dev);
+    struct aw8697 *aw8697 = container_of(cdev, struct aw8697, cdev);
+#endif
+    unsigned int databuf[1] = {0};
+
+    aw8697->vmax = 0x11;
+    aw8697->gain = 0x80;
+    aw8697_haptic_set_gain(aw8697, aw8697->gain);
+    aw8697_haptic_set_bst_vol(aw8697, aw8697->vmax);
+
+    if (sscanf(buf, "%x", &databuf[0]) == 1) {
+        pr_err("%s: waveform_index = %d\n", __FUNCTION__, databuf[0]);
+        mutex_lock(&aw8697->lock);
+        aw8697->seq[0] = (unsigned char)databuf[0];
+        aw8697_haptic_set_wav_seq(aw8697, 0, aw8697->seq[0]);
+        aw8697_haptic_set_wav_seq(aw8697, 1, 0);
+        aw8697_haptic_set_wav_loop(aw8697, 0, 0);
+        mutex_unlock(&aw8697->lock);
+    }
+    return count;
+}
+
 static int aw8697_i2c_reads(struct aw8697 *aw8697,
 		unsigned char reg_addr, unsigned char *buf, unsigned int len)
 {
@@ -5121,6 +5242,7 @@ static DEVICE_ATTR(haptic_audio_tp_input, S_IWUSR | S_IRUGO, aw8697_haptic_audio
 static DEVICE_ATTR(haptic_audio_ai_input, S_IWUSR | S_IRUGO, aw8697_haptic_audio_ai_input_show, aw8697_haptic_audio_ai_input_store);
 static DEVICE_ATTR(haptic_audio_tp_size, S_IWUSR | S_IRUGO, aw8697_haptic_audio_tp_size_show, aw8697_haptic_audio_tp_size_store);
 static DEVICE_ATTR(haptic_audio_tz_cnt, S_IWUSR | S_IRUGO, aw8697_haptic_audio_tz_cnt_show, aw8697_haptic_audio_tz_cnt_store);
+static DEVICE_ATTR(waveform_index, S_IWUSR | S_IRUGO, aw8697_waveform_index_show, aw8697_waveform_index_store);
 static DEVICE_ATTR(haptic_audio_hap_cnt_max_outside_tz, S_IWUSR | S_IRUGO, aw8697_haptic_audio_hap_cnt_max_outside_tz_show, aw8697_haptic_audio_hap_cnt_max_outside_tz_store);
 static DEVICE_ATTR(haptic_osc_data, S_IWUSR | S_IRUGO, aw8697_haptic_osc_data_show, aw8697_osc_data_store);
 static DEVICE_ATTR(ram_test, S_IWUSR | S_IRUGO, aw8697_haptic_ram_test_show, aw8697_haptic_ram_test_store);
@@ -5165,6 +5287,7 @@ static struct attribute *aw8697_vibrator_attributes[] = {
     &dev_attr_haptic_audio_tz_cnt.attr,
     &dev_attr_haptic_audio_hap_cnt_max_outside_tz.attr,
     &dev_attr_haptic_osc_data.attr,
+    &dev_attr_waveform_index.attr,
     &dev_attr_ram_test.attr,
     &dev_attr_gun_type.attr,
     &dev_attr_bullet_nr.attr,
