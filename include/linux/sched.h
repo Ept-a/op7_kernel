@@ -1373,6 +1373,8 @@ struct task_struct {
 	struct task_struct		*simple_lmk_next;
 #endif
 
+	int top_app;
+	
 	struct {
 		struct work_struct work;
 		atomic_t running;
