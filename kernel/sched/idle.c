@@ -246,9 +246,10 @@ static void do_idle(void)
 	while (!need_resched()) {
 		check_pgt_cache();
 		rmb();
+		local_irq_disable();
 
 		if (cpu_is_offline(cpu)) {
-			tick_nohz_idle_stop_tick_protected();
+			tick_nohz_idle_stop_tick();
 			cpuhp_report_idle_dead();
 			arch_cpu_idle_dead();
 		}

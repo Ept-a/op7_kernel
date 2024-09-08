@@ -3544,9 +3544,6 @@ ssize_t oneplus_display_notify_fp_press(struct device *dev,
 	return count;
 }
 extern int aod_layer_hide;
-extern int oneplus_panel_status;
-extern int backup_dim_status;
-extern bool backup_dimlayer_hbm;
 extern bool HBM_flag;
 int oneplus_dim_status = 0;
 int oneplus_aod_fod = 0;
@@ -3580,8 +3577,6 @@ ssize_t oneplus_display_notify_dim(struct device *dev,
 	dsi_connector = dsi_display->drm_conn;
 	mode_config = &drm_dev->mode_config;
 	sscanf(buf, "%du", &dim_status);
-	if (oneplus_panel_status == 0)
-		dim_status = 0;
 
 	if (dsi_display->panel->aod_status == 0 && (dim_status == 2)) {
 		pr_err("fp set it in normal status\n");
@@ -3604,8 +3599,6 @@ ssize_t oneplus_display_notify_dim(struct device *dev,
 		return count;
 	oneplus_dim_status = dim_status;
 	oneplus_dimlayer_hbm_enable = oneplus_dim_status != 0;
-	backup_dimlayer_hbm = oneplus_dimlayer_hbm_enable;
-	backup_dim_status = oneplus_dim_status;
 	pr_err("notify dim %d,aod = %d press= %d aod_hide =%d oneplus_dimlayer_hbm_enable = %d\n",
 		oneplus_dim_status, dsi_display->panel->aod_status, oneplus_onscreenfp_status, aod_layer_hide, oneplus_dimlayer_hbm_enable);
 	if (oneplus_dim_status == 1 && HBM_flag) {
@@ -3628,6 +3621,7 @@ ssize_t oneplus_display_notify_dim(struct device *dev,
 	return count;
 }
 /***************************************************************************/
+extern int chen_need_active_hbm_next_frame;
 static int sde_crtc_config_fingerprint_dim_layer(struct drm_crtc_state *crtc_state, int stage)
 {
 	struct sde_crtc_state *cstate;
@@ -5759,7 +5753,9 @@ int op_dimlayer_bl_alpha = 260;
 int op_dimlayer_bl_enabled = 0;
 int op_dimlayer_bl_enable_real = 0;
 int op_dimlayer_bl = 0;
+extern int dimlayer_hbm_is_single_layer;
 bool finger_type = false;
+bool is_exist_fp_icon = false;
 //extern int aod_layer_hide;
 extern int op_dimlayer_bl_enable;
 extern int op_dp_enable;
@@ -5844,6 +5840,13 @@ static int sde_crtc_onscreenfinger_atomic_check(struct sde_crtc_state *cstate,
         return 0;
 	}
 
+		is_exist_fp_icon = fp_index >= 0;
+
+	dimlayer_hbm_is_single_layer = cnt == 2 ? 1 : 0;
+
+	if (fppressed_index >= 0 || fp_index >= 0)
+		pr_err("Art_Chen: Check Fingerprint layer, reason: fp_index is %d, fppressed_index is %d aod_index is %d\n", fp_index, fppressed_index, aod_index);
+
 	if (
 		(fp_index >= 0 && dim_mode != 0) ||
 		(display->panel->aod_status == 1
@@ -5873,8 +5876,24 @@ static int sde_crtc_onscreenfinger_atomic_check(struct sde_crtc_state *cstate,
 		}
     }
 
+	if (oneplus_dimlayer_hbm_enable && fppressed_index == -1 && cnt > 0) {
+        if (chen_need_active_hbm_next_frame && !dimlayer_hbm_is_single_layer) {
+			int tempZPos = 0;
+			for (i = 0; i < cnt; i++) {
+				if (pstates[i].stage > tempZPos) {
+					tempZPos = pstates[i].stage;
+					fppressed_index = i;
+				}
+			}
+		pr_err("Art_Chen: Force Top Layer set fppressed_index %d", fppressed_index);
+        } else {
+        	fppressed_index = chen_need_active_hbm_next_frame ? 1 : -1;
+        }
+		cstate->fingerprint_pressed = fp_mode == 1;
+	}
+
 	if (oneplus_dimlayer_hbm_enable || oneplus_force_screenfp || dim_backlight == 1) {
-		if (fp_index >= 0 && fppressed_index >= 0) {
+		if (fp_index >= 0 && fppressed_index >= 0 && !chen_need_active_hbm_next_frame) {
 			if (pstates[fp_index].stage >= pstates[fppressed_index].stage) {
 				SDE_ERROR("Bug!!@@@@: fp layer top of fppressed layer\n");
 				return -EINVAL;
@@ -5918,10 +5937,11 @@ static int sde_crtc_onscreenfinger_atomic_check(struct sde_crtc_state *cstate,
 			//SDE_ERROR("Failed to config dim layer\n");
 			return -EINVAL;
 		}
-		if (fppressed_index >= 0) {
-			cstate->fingerprint_pressed = true;
-		} else {
-			cstate->fingerprint_pressed = false;
+		if (!chen_need_active_hbm_next_frame || !dimlayer_hbm_is_single_layer) {
+			if (fppressed_index >= 0 || (fp_index >= 0 && fp_mode == 1))
+				cstate->fingerprint_pressed = true;
+			else
+				cstate->fingerprint_pressed = false;
 		}
 	} else {
 		cstate->fingerprint_dim_layer = NULL;
@@ -5932,6 +5952,7 @@ static int sde_crtc_onscreenfinger_atomic_check(struct sde_crtc_state *cstate,
 	if (fp_mode == 1 && !oneplus_dimlayer_hbm_enable) {
 		cstate->fingerprint_mode = true;
 		cstate->fingerprint_pressed = true;
+		return 0;
 	}
 
 	return 0;
