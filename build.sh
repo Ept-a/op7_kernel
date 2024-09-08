@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export ARCH=arm64
-export CROSS_COMPILE=~/Git/1/buildtools/tc/tc64/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=~/Git/1/buildtools/tc/colorostc64/bin/aarch64-linux-gnu-
 export CROSS_COMPILE_ARM32=~/Git/1/buildtools/tc/tc32/bin/arm-none-eabi-
 export KJOBS="$((`grep -c '^processor' /proc/cpuinfo` * 2))"
 VERSION="$(cat arch/arm64/configs/sm8150-perf_defconfig | grep "CONFIG_LOCALVERSION\=" | sed -r 's/.*"(.+)".*/\1/' | sed 's/^.//')"
