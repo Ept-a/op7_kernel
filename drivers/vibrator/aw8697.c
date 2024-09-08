@@ -90,84 +90,178 @@ static char aw8697_ram_name[5][30] = {
 {"aw8697_haptic_172.bin"},
 {"aw8697_haptic_174.bin"},
 };
+// Add for Color
 static char aw8697_rtp_name[][AW8697_RTP_NAME_MAX] = {
-	{"aw8697_rtp.bin"},
-	{"ring_alacrity.bin"},
-	{"ring_amenity.bin"},
-	{"ring_blues.bin"},
-	{"ring_brisk.bin"},
-	{"ring_cloud.bin"},
-	{"ring_cyclotron.bin"},
-	{"ring_distinct.bin"},
-	{"ring_dynamic.bin"},
-	{"ring_echo.bin"},
-	{"ring_expect.bin"},
-	{"ring_fanatical.bin"},
-	{"ring_funky.bin"},
-	{"ring_game.bin"},
-	{"ring_guitar.bin"},
-	{"ring_harping.bin"},
-	{"ring_highlight.bin"},
-	{"ring_idyl.bin"},
-	{"ring_innocence.bin"},
-	{"ring_journey.bin"},
-	{"ring_joyous.bin"},
-	{"ring_marimba.bin"},
-	{"ring_old_telephone.bin"},
-	{"ring_oneplus_tune.bin"},
-	{"ring_oneplus_tune_rhythm.bin"},
-	{"ring_optimistic.bin"},
-	{"ring_piano.bin"},
-	{"ring_pyxis.bin"},
-	{"ring_T-Jingle.bin"},
-	{"ring_McLarn.bin"},
-	{"notif_allusion.bin"},
-	{"notif_amiable.bin"},
-	{"notif_blare.bin"},
-	{"notif_blissful.bin"},
-	{"notif_cheerful.bin"},
-	{"notif_comely.bin"},
-	{"notif_cozy.bin"},
-	{"notif_ding.bin"},
-	{"notif_effervesce.bin"},
-	{"notif_elegant.bin"},
-	{"notif_free.bin"},
-	{"notif_hallucination.bin"},
-	{"notif_inbound.bin"},
-	{"notif_incidence.bin"},
-	{"notif_light.bin"},
-	{"notif_meet.bin"},
-	{"notif_naivety.bin"},
-	{"notif_quickly.bin"},
-	{"notif_rhythm.bin"},
-	{"notif_silent.bin"},
-	{"notif_spirit.bin"},
-	{"notif_surprise.bin"},
-	{"notif_twinkle.bin"},
-	{"notif_Ardour.bin"},
-	{"notif_Chic.bin"},
-	{"alarm_clock1.bin"},
-	{"alarm_clock2.bin"},
-	{"alarm_clock3.bin"},
-	{"alarm_clock4.bin"},
-	{"alarm_clock5.bin"},
-	{"alarm_breeze.bin"},
-	{"alarm_dream.bin"},
-	{"alarm_fluttering.bin"},
-	{"alarm_flyer.bin"},
-	{"alarm_interesting.bin"},
-	{"alarm_leisurely.bin"},
-	{"alarm_memory.bin"},
-	{"alarm_relieved.bin"},
-	{"alarm_ripple.bin"},
-	{"alarm_spring.bin"},
-	{"alarm_stars.bin"},
-	{"alarm_surging.bin"},
-	{"alarm_tactfully.bin"},
-	{"alarm_the_wind.bin"},
-	{"alarm_walking_in_the_rain.bin"},
-	{"shuntai24k_rtp.bin"},
-	{"wentai24k_rtp.bin"},
+    {"aw8697_rtp.bin"},
+/* tongfeng.Huang@BSP.CHG.Basic, 2018/11/17,  Add for config trig1 */
+    {"aw8697_Hearty_channel_RTP_1.bin"},
+    {"aw8697_Instant_channel_RTP_2.bin"},
+    {"aw8697_Music_channel_RTP_3.bin"},
+    {"aw8697_Percussion_channel_RTP_4.bin"},
+    {"aw8697_Ripple_channel_RTP_5.bin"},
+    {"aw8697_Bright_channel_RTP_6.bin"},
+    {"aw8697_Fun_channel_RTP_7.bin"},
+    {"aw8697_Glittering_channel_RTP_8.bin"},
+    {"aw8697_Granules_channel_RTP_9.bin"},
+    {"aw8697_Harp_channel_RTP_10.bin"},
+    {"aw8697_Impression_channel_RTP_11.bin"},
+    {"aw8697_Ingenious_channel_RTP_12.bin"},
+    {"aw8697_Joy_channel_RTP_13.bin"},
+    {"aw8697_Overtone_channel_RTP_14.bin"},
+    {"aw8697_Receive_channel_RTP_15.bin"},
+    {"aw8697_Splash_channel_RTP_16.bin"},
+
+    {"aw8697_About_School_RTP_17.bin"},
+    {"aw8697_Bliss_RTP_18.bin"},
+    {"aw8697_Childhood_RTP_19.bin"},
+    {"aw8697_Commuting_RTP_20.bin"},
+    {"aw8697_Dream_RTP_21.bin"},
+    {"aw8697_Firefly_RTP_22.bin"},
+    {"aw8697_Gathering_RTP_23.bin"},
+    {"aw8697_Gaze_RTP_24.bin"},
+    {"aw8697_Lakeside_RTP_25.bin"},
+    {"aw8697_Lifestyle_RTP_26.bin"},
+    {"aw8697_Memories_RTP_27.bin"},
+    {"aw8697_Messy_RTP_28.bin"},
+    {"aw8697_Night_RTP_29.bin"},
+    {"aw8697_Passionate_Dance_RTP_30.bin"},
+    {"aw8697_Playground_RTP_31.bin"},
+    {"aw8697_Relax_RTP_32.bin"},
+    {"aw8697_Reminiscence_RTP_33.bin"},
+    {"aw8697_Silence_From_Afar_RTP_34.bin"},
+    {"aw8697_Silence_RTP_35.bin"},
+    {"aw8697_Stars_RTP_36.bin"},
+    {"aw8697_Summer_RTP_37.bin"},
+    {"aw8697_Toys_RTP_38.bin"},
+    {"aw8697_Travel_RTP_39.bin"},
+    {"aw8697_Vision_RTP_40.bin"},
+
+    {"aw8697_waltz_channel_RTP_41.bin"},
+    {"aw8697_cut_channel_RTP_42.bin"},
+    {"aw8697_clock_channel_RTP_43.bin"},
+    {"aw8697_long_sound_channel_RTP_44.bin"},
+    {"aw8697_short_channel_RTP_45.bin"},
+    {"aw8697_two_error_remaind_RTP_46.bin"},
+
+    {"aw8697_kill_program_RTP_47.bin"},
+    {"aw8697_Simple_channel_RTP_48.bin"},
+    {"aw8697_Pure_RTP_49.bin"},
+    {"aw8697_reserved_sound_channel_RTP_50.bin"},
+
+    {"aw8697_high_temp_high_humidity_channel_RTP_51.bin"},
+
+    {"aw8697_old_steady_test_19081_52.bin"},
+    {"aw8697_listen_pop_53.bin"},
+    {"aw8697_desk_7_RTP_54.bin"},
+    {"aw8697_nfc_10_RTP_55.bin"},
+    {"aw8697_vibrator_remain_12_RTP_56.bin"},
+    {"aw8697_notice_13_RTP_57.bin"},
+    {"aw8697_third_ring_14_RTP_58.bin"},
+    {"aw8697_reserved_59.bin"},
+
+    {"aw8697_honor_fisrt_kill_RTP_60.bin"},
+    {"aw8697_honor_two_kill_RTP_61.bin"},
+    {"aw8697_honor_three_kill_RTP_62.bin"},
+    {"aw8697_honor_four_kill_RTP_63.bin"},
+    {"aw8697_honor_five_kill_RTP_64.bin"},
+    {"aw8697_honor_three_continu_kill_RTP_65.bin"},
+    {"aw8697_honor_four_continu_kill_RTP_66.bin"},
+    {"aw8697_honor_unstoppable_RTP_67.bin"},
+    {"aw8697_honor_thousands_kill_RTP_68.bin"},
+    {"aw8697_honor_lengendary_RTP_69.bin"},
+
+    {"aw8697_reserved_70.bin"},
+    {"aw8697_reserved_71.bin"},
+    {"aw8697_reserved_72.bin"},
+    {"aw8697_reserved_73.bin"},
+    {"aw8697_reserved_74.bin"},
+    {"aw8697_reserved_75.bin"},
+    {"aw8697_reserved_76.bin"},
+    {"aw8697_reserved_77.bin"},
+    {"aw8697_reserved_78.bin"},
+    {"aw8697_reserved_79.bin"},
+
+    {"aw8697_reserved_80.bin"},
+    {"aw8697_reserved_81.bin"},
+    {"aw8697_reserved_82.bin"},
+    {"aw8697_reserved_83.bin"},
+    {"aw8697_reserved_84.bin"},
+    {"aw8697_reserved_85.bin"},
+    {"aw8697_reserved_86.bin"},
+    {"aw8697_reserved_87.bin"},
+    {"aw8697_reserved_88.bin"},
+    {"aw8697_reserved_89.bin"},
+
+    {"aw8697_reserved_90.bin"},
+    {"aw8697_reserved_91.bin"},
+    {"aw8697_reserved_92.bin"},
+    {"aw8697_reserved_93.bin"},
+    {"aw8697_reserved_94.bin"},
+    {"aw8697_reserved_95.bin"},
+    {"aw8697_reserved_96.bin"},
+    {"aw8697_reserved_97.bin"},
+    {"aw8697_reserved_98.bin"},
+    {"aw8697_reserved_99.bin"},
+
+    {"aw8697_soldier_first_kill_RTP_100.bin"},
+    {"aw8697_soldier_second_kill_RTP_101.bin"},
+    {"aw8697_soldier_third_kill_RTP_102.bin"},
+    {"aw8697_soldier_fourth_kill_RTP_103.bin"},
+    {"aw8697_soldier_fifth_kill_RTP_104.bin"},
+    {"aw8697_reserved_105.bin"},
+    {"aw8697_reserved_106.bin"},
+    {"aw8697_reserved_107.bin"},
+    {"aw8697_reserved_108.bin"},
+    {"aw8697_reserved_109.bin"},
+
+/* lliangliang.shan@BSP.CHG.Basic, 2019/11/29,  Add for config trig1 */
+	{"aw8697_reserved_110.bin"},
+    {"aw8697_reserved_111.bin"},
+    {"aw8697_reserved_112.bin"},
+    {"aw8697_reserved_113.bin"},
+    {"aw8697_reserved_114.bin"},
+    {"aw8697_reserved_115.bin"},
+    {"aw8697_reserved_116.bin"},
+    {"aw8697_reserved_117.bin"},
+    {"aw8697_reserved_118.bin"},
+    {"aw8697_reserved_119.bin"},
+
+    {"aw8697_Miss_RTP_120.bin"},
+    {"aw8697_Scenic_RTP_121.bin"},
+    {"aw8697_reserved_122.bin"},
+
+/* used for coloros 7 */
+    {"aw8697_Appear_channel_RTP_coloros7_123.bin"},
+    {"aw8697_Miss_RTP_coloros7_124.bin"},
+    {"aw8697_Music_channel_RTP_coloros7_125.bin"},
+    {"aw8697_Percussion_channel_RTP_coloros7_126.bin"},
+    {"aw8697_Ripple_channel_RTP_coloros7_127.bin"},
+    {"aw8697_Bright_channel_RTP_coloros7_128.bin"},
+    {"aw8697_Fun_channel_RTP_coloros7_129.bin"},
+    {"aw8697_Glittering_channel_RTP_coloros7_130.bin"},
+    {"aw8697_Harp_channel_RTP_coloros7_131.bin"},
+    {"aw8697_Overtone_channel_RTP_coloros7_132.bin"},
+    {"aw8697_Simple_channel_RTP_coloros7_133.bin"},
+
+    {"aw8697_Seine_past_RTP_coloros7_134.bin"},
+    {"aw8697_Classical_ring_RTP_coloros7_135.bin"},
+    {"aw8697_Long_for_RTP_coloros7_136.bin"},
+    {"aw8697_Romantic_RTP_coloros7_137.bin"},
+    {"aw8697_Bliss_RTP_coloros7_138.bin"},
+    {"aw8697_Dream_RTP_coloros7_139.bin"},
+    {"aw8697_Relax_RTP_coloros7_140.bin"},
+    {"aw8697_Joy_channel_RTP_coloros7_141.bin"},
+    {"aw8697_weather_wind_RTP_coloros7_142.bin"},
+    {"aw8697_weather_cloudy_RTP_coloros7_143.bin"},
+    {"aw8697_weather_thunderstorm_RTP_coloros7_144.bin"},
+    {"aw8697_weather_default_RTP_coloros7_145.bin"},
+    {"aw8697_weather_sunny_RTP_coloros7_146.bin"},
+    {"aw8697_weather_smog_RTP_coloros7_147.bin"},
+    {"aw8697_weather_snow_RTP_coloros7_148.bin"},
+    {"aw8697_weather_rain_RTP_coloros7_149.bin"},
+
+    {"aw8697_rtp_lighthouse.bin"},
+    {"aw8697_rtp_silk.bin"},
 };
 
 struct aw8697_container *aw8697_rtp;
@@ -4953,6 +5047,41 @@ static ssize_t aw8697_haptic_audio_hap_cnt_max_outside_tz_store(struct device *d
     return count;
 }
 
+static ssize_t aw8697_waveform_index_show(struct device *dev, struct device_attribute *attr,
+                char *buf)
+{
+    return 0;
+}
+
+static ssize_t aw8697_waveform_index_store(struct device *dev, struct device_attribute *attr,
+                const char *buf, size_t count)
+{
+#ifdef TIMED_OUTPUT
+    struct timed_output_dev *to_dev = dev_get_drvdata(dev);
+    struct aw8697 *aw8697 = container_of(to_dev, struct aw8697, to_dev);
+#else
+    struct led_classdev *cdev = dev_get_drvdata(dev);
+    struct aw8697 *aw8697 = container_of(cdev, struct aw8697, cdev);
+#endif
+    unsigned int databuf[1] = {0};
+
+    aw8697->vmax = 0x11;
+    aw8697->gain = 0x80;
+    aw8697_haptic_set_gain(aw8697, aw8697->gain);
+    aw8697_haptic_set_bst_vol(aw8697, aw8697->vmax);
+
+    if(1 == sscanf(buf, "%x", &databuf[0])) {
+        pr_err("%s: waveform_index = %d\n", __FUNCTION__, databuf[0]);
+        mutex_lock(&aw8697->lock);
+        aw8697->seq[0] = (unsigned char)databuf[0];
+        aw8697_haptic_set_wav_seq(aw8697, 0, aw8697->seq[0]);
+        aw8697_haptic_set_wav_seq(aw8697, 1, 0);
+        aw8697_haptic_set_wav_loop(aw8697, 0, 0);
+        mutex_unlock(&aw8697->lock);
+    }
+    return count;
+}
+
 static int aw8697_i2c_reads(struct aw8697 *aw8697,
 		unsigned char reg_addr, unsigned char *buf, unsigned int len)
 {
@@ -5121,6 +5250,7 @@ static DEVICE_ATTR(haptic_audio_tp_input, S_IWUSR | S_IRUGO, aw8697_haptic_audio
 static DEVICE_ATTR(haptic_audio_ai_input, S_IWUSR | S_IRUGO, aw8697_haptic_audio_ai_input_show, aw8697_haptic_audio_ai_input_store);
 static DEVICE_ATTR(haptic_audio_tp_size, S_IWUSR | S_IRUGO, aw8697_haptic_audio_tp_size_show, aw8697_haptic_audio_tp_size_store);
 static DEVICE_ATTR(haptic_audio_tz_cnt, S_IWUSR | S_IRUGO, aw8697_haptic_audio_tz_cnt_show, aw8697_haptic_audio_tz_cnt_store);
+static DEVICE_ATTR(waveform_index, S_IWUSR | S_IRUGO, aw8697_waveform_index_show, aw8697_waveform_index_store);
 static DEVICE_ATTR(haptic_audio_hap_cnt_max_outside_tz, S_IWUSR | S_IRUGO, aw8697_haptic_audio_hap_cnt_max_outside_tz_show, aw8697_haptic_audio_hap_cnt_max_outside_tz_store);
 static DEVICE_ATTR(haptic_osc_data, S_IWUSR | S_IRUGO, aw8697_haptic_osc_data_show, aw8697_osc_data_store);
 static DEVICE_ATTR(ram_test, S_IWUSR | S_IRUGO, aw8697_haptic_ram_test_show, aw8697_haptic_ram_test_store);
@@ -5165,6 +5295,7 @@ static struct attribute *aw8697_vibrator_attributes[] = {
     &dev_attr_haptic_audio_tz_cnt.attr,
     &dev_attr_haptic_audio_hap_cnt_max_outside_tz.attr,
     &dev_attr_haptic_osc_data.attr,
+    &dev_attr_waveform_index.attr,
     &dev_attr_ram_test.attr,
     &dev_attr_gun_type.attr,
     &dev_attr_bullet_nr.attr,
