@@ -83,7 +83,8 @@ static int set_gpio_by_pinctrl(void)
 /*op add to fix GCE-7551 begin*/
 extern int aw8697_op_haptic_stop(void);
 /*op add to fix GCE-7551 end*/
-
+int i;
+int chen_tri_state = -1;
 static void extcon_dev_work(struct work_struct *work)
 {
 	int key[3] = {0, 0, 0};
@@ -158,6 +159,14 @@ static void extcon_dev_work(struct work_struct *work)
 			pre_key1 = key[1];
 			pre_key2 = key[2];
 		}
+		if (!key[0] || !key[1] || !key[2]) {
+			for (i = 0; i < 3; i++) {
+				if (!key[i]) {
+					chen_tri_state = i;
+					break;
+				}
+			}
+		}
 		/*op add to fix ISTRACKING-34823 end*/
 	}
 }
@@ -212,6 +221,24 @@ extcon_dev_get_devtree_pdata(struct device *dev)
 }
 #endif
 
+static ssize_t chen_tri_state_show(struct device *dev,
+				struct device_attribute *attr, char *buf)
+{
+
+	return snprintf(buf, PAGE_SIZE, "%d\n", chen_tri_state);
+}
+
+static DEVICE_ATTR(chen_tri_state, S_IRUGO | S_IWUSR, chen_tri_state_show, NULL);
+
+static struct attribute *tri_key_attributes[] = {
+	&dev_attr_chen_tri_state.attr,
+	NULL
+};
+
+static struct attribute_group tri_key_attribute_group = {
+	.attrs = tri_key_attributes
+};
+
 static int tristate_dev_probe(struct platform_device *pdev)
 {
 	struct device *dev;
@@ -246,6 +273,12 @@ static int tristate_dev_probe(struct platform_device *pdev)
 		KEY_LOG("parse device tree fail!!!\n");
 		goto err_extcon_dev_register;
 	}
+	ret = sysfs_create_group(&pdev->dev.kobj, &tri_key_attribute_group);
+	if (ret) {
+		KEY_LOG("tri_key:sysfs_create_group was failed\n");
+		goto sysfs_create_fail;
+	}
+
 
 
 	/* extcon registration */
@@ -342,6 +375,8 @@ err_set_gpio_input:
 	gpio_free(extcon_data->key2_gpio);
 	gpio_free(extcon_data->key1_gpio);
 	gpio_free(extcon_data->key3_gpio);
+sysfs_create_fail:
+	sysfs_remove_group(&pdev->dev.kobj, &tri_key_attribute_group);
 err_extcon_dev_register:
 	kfree(extcon_data);
 
@@ -366,6 +401,7 @@ static const struct of_device_id tristate_dev_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, tristate_dev_of_match);
 #endif
+
 
 static struct platform_driver tristate_dev_driver = {
 	.probe		= tristate_dev_probe,
