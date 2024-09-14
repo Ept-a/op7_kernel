@@ -7960,7 +7960,7 @@ static void set_usb_switch(struct smb_charger *chg, bool enable)
 
 
 	if (enable) {
-		pr_debug("switch on fastchg\n");
+		pr_err("switch on fastchg\n");
 		chg->switch_on_fastchg = true;
 		if (chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_HIGH ||
 				chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_MEDIUM)

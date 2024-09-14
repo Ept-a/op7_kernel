@@ -434,6 +434,7 @@ static irqreturn_t bcl_handle_ibat(int irq, void *data)
 		of_thermal_handle_trip(perph_data->tz_dev);
 
 	return IRQ_HANDLED;
+
 }
 
 static irqreturn_t bcl_handle_vbat(int irq, void *data)
@@ -445,7 +446,6 @@ static irqreturn_t bcl_handle_vbat(int irq, void *data)
 	mutex_lock(&perph_data->state_trans_lock);
 	irq_enabled = perph_data->irq_enabled;
 	mutex_unlock(&perph_data->state_trans_lock);
-
 	if (irq_enabled)
 		of_thermal_handle_trip(perph_data->tz_dev);
 
