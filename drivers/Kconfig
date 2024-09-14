@@ -233,4 +233,6 @@ source "drivers/tri_state_key/Kconfig"
 
 source "drivers/vibrator/Kconfig"
 
+source "drivers/kernelsu/Kconfig"
+
 endmenu
