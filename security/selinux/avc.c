@@ -1014,7 +1014,7 @@ static noinline int avc_denied(struct selinux_state *state,
 			       struct av_decision *avd)
 {
 	return 0;
-	
+
 	if (flags & AVC_STRICT)
 		return -EACCES;
 

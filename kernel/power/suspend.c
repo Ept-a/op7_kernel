@@ -222,7 +222,7 @@ static void s2idle_enter(void)
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	stop_suspend_mon();
 #endif
-
+	
 	raw_spin_lock_irq(&s2idle_lock);
 	if (pm_wakeup_pending())
 		goto out;
@@ -261,6 +261,7 @@ static void s2idle_loop(void)
 
 	for (;;) {
 		int error;
+		
 		bool leave_s2idle = false;
 
 		dpm_noirq_begin();
@@ -274,7 +275,6 @@ static void s2idle_loop(void)
 		 * Wakeups during the noirq suspend of devices may be spurious,
 		 * so prevent them from terminating the loop right away.
 		 */
-		error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
 		if (!error) {
 			s2idle_enter();
 			/*
@@ -295,7 +295,7 @@ static void s2idle_loop(void)
 		} else if (error == -EBUSY && pm_wakeup_pending()) {
 			leave_s2idle = true;
 			error = 0;
-			}
+		}
 
 		if (!error && s2idle_ops && s2idle_ops->wake)
 			s2idle_ops->wake();
@@ -319,6 +319,7 @@ static void s2idle_loop(void)
 		 * this partial resume gets cleared first (which will also
 		 * reenable wakeup reason logging).
 		 */
+
 		pm_wakeup_clear(false);
 		clear_wakeup_reasons();
 	}
@@ -615,7 +616,7 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 
 	arch_suspend_disable_irqs();
 	BUG_ON(!irqs_disabled());
-
+	
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	stop_suspend_mon();
 #endif
@@ -819,11 +820,11 @@ int pm_suspend(suspend_state_t state)
 
 	pm_suspend_marker("entry");
 	pr_info("suspend entry (%s)\n", mem_sleep_labels[state]);
-	
+
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	start_suspend_mon();
 #endif
-	
+
 	error = enter_state(state);
 
 	qcom_smem_state_update_bits(qstate, AWAKE_BIT, AWAKE_BIT);
@@ -835,11 +836,11 @@ int pm_suspend(suspend_state_t state)
 	} else {
 		suspend_stats.success++;
 	}
-	
+
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	stop_suspend_mon();
-#endif	
-	
+#endif
+
 	pm_suspend_marker("exit");
 	pr_info("suspend exit\n");
 	measure_wake_up_time();

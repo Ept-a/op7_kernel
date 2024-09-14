@@ -1252,7 +1252,7 @@ static long  dash_dev_ioctl(struct file *filp, unsigned int cmd,
 				di->fast_chg_ing = true;
 				volt = onplus_get_battery_mvolts();
 				temp = onplus_get_battery_temperature();
-#ifdef CONFIG_REMOVE_OP_CAPACITY
+				#ifdef CONFIG_REMOVE_OP_CAPACITY
 				if (!remove_op_capacity) {
 					remain_cap = onplus_get_batt_remaining_capacity();
 				} else {

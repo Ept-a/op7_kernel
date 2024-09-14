@@ -246,6 +246,7 @@ static void do_idle(void)
 	while (!need_resched()) {
 		check_pgt_cache();
 		rmb();
+
 		local_irq_disable();
 
 		if (cpu_is_offline(cpu)) {
@@ -253,8 +254,6 @@ static void do_idle(void)
 			cpuhp_report_idle_dead();
 			arch_cpu_idle_dead();
 		}
-
-		local_irq_disable();
 		arch_cpu_idle_enter();
 
 		/*

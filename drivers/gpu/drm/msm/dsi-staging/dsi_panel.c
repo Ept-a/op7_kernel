@@ -4691,8 +4691,8 @@ int dsi_panel_set_lp2(struct dsi_panel *panel)
 	if (rc)
 		pr_err("[%s] failed to send DSI_CMD_SET_LP2 cmd, rc=%d\n",
 		       panel->name, rc);
-		       
-		       chen_power_status = 4; // DISPLAY_POWER_DOZE_SUSPEND
+	
+	chen_power_status = 4; //DISPLAY_POWER_DOZE_SUSPEND
 exit:
 	mutex_unlock(&panel->panel_lock);
 	return rc;
@@ -4723,7 +4723,7 @@ int dsi_panel_set_nolp(struct dsi_panel *panel)
 	if (rc)
 		pr_err("[%s] failed to send DSI_CMD_SET_NOLP cmd, rc=%d\n",
 		       panel->name, rc);
-		       chen_power_status = 2; // DISPLAY_POWER_ON
+	chen_power_status = 2; //DISPLAY_POWER_ON
 exit:
 	mutex_unlock(&panel->panel_lock);
 	return rc;
@@ -5107,9 +5107,9 @@ int dsi_panel_enable(struct dsi_panel *panel)
 
 	panel->panel_initialized = true;
 	pr_err("dsi_panel_enable aod_mode =%d\n", panel->aod_mode);
-	
-	chen_power_status = 2; // DISPLAY_POWER_ON
 
+	chen_power_status = 2; //DISPLAY_POWER_ON
+	
 	mutex_unlock(&panel->panel_lock);
 	if (panel->aod_mode == 2) {
 		rc = dsi_panel_set_aod_mode(panel, 2);

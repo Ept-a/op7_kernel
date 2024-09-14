@@ -1211,7 +1211,6 @@ static void qmi_rmnet_check_stats(struct work_struct *work)
 		    !rmnet_all_flows_enabled(real_work->port))
 			goto end;
 
-
 		/* Deregister to suppress QMI DFC and DL marker */
 		if (qmi_rmnet_set_powersave_mode(real_work->port, 1) < 0)
 			goto end;

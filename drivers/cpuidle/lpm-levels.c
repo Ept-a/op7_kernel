@@ -1555,7 +1555,7 @@ static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 		return;
 	}
 
-		spin_lock(&s2idle_lock);
+	spin_lock(&s2idle_lock);
 	if (cpumask_empty(&idling_cpus)) {
 		s2idle_sleep_attempts = 0;
 		s2idle_aborted = false;
