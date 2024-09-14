@@ -62,7 +62,7 @@
 #define PSCI_AFFINITY_LEVEL(lvl) ((lvl & 0x3) << 24)
 #define BIAS_HYST (bias_hyst * NSEC_PER_MSEC)
 
-#define MAX_S2IDLE_CPU_ATTEMPTS 24 /* divide by # cpus for max suspends */
+#define MAX_S2IDLE_CPU_ATTEMPTS  24   /* divide by # cpus for max suspends */
 
 enum {
 	MSM_LPM_LVL_DBG_SUSPEND_LIMITS = BIT(0),
@@ -1555,7 +1555,7 @@ static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 		return;
 	}
 
-		spin_lock(&s2idle_lock);
+	spin_lock(&s2idle_lock);
 	if (cpumask_empty(&idling_cpus)) {
 		s2idle_sleep_attempts = 0;
 		s2idle_aborted = false;
@@ -1575,7 +1575,7 @@ static void lpm_cpuidle_s2idle(struct cpuidle_device *dev,
 		pm_system_wakeup();
 		goto exit;
 	}
-	
+
 	cpu_prepare(cpu, idx, true);
 	cluster_prepare(cpu->parent, cpumask, idx, false, 0);
 

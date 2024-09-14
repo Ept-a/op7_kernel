@@ -118,7 +118,7 @@ struct acc_dev {
 
 	/* delayed work for handling ACCESSORY_START */
 	struct delayed_work start_work;
-	
+
 	/* work for handling ACCESSORY GET PROTOCOL */
 	struct work_struct getprotocol_work;
 

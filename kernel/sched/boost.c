@@ -284,7 +284,7 @@ int sched_boost_handler(struct ctl_table *table, int write,
 		sysctl_sched_boost = sched_boost_type;
 		goto done;
 	}
-	
+
 	if (verify_boost_params(*data))
 		_sched_set_boost(*data);
 	else

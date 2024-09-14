@@ -7954,7 +7954,7 @@ static void set_usb_switch(struct smb_charger *chg, bool enable)
 	int retrger_time;
 
 	if (!fast_charger) {
-		pr_err("no fast_charger register found\n");
+		pr_err("switch on fastchg\n");
 		return;
 	}
 

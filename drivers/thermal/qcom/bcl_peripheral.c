@@ -425,10 +425,11 @@ static irqreturn_t bcl_handle_ibat(int irq, void *data)
 	struct bcl_peripheral_data *perph_data =
 		(struct bcl_peripheral_data *)data;
 	bool irq_enabled = false;
-	
+
 	mutex_lock(&perph_data->state_trans_lock);
 	irq_enabled = perph_data->irq_enabled;
 	mutex_unlock(&perph_data->state_trans_lock);
+
 	if (irq_enabled)
 		of_thermal_handle_trip(perph_data->tz_dev);
 
@@ -440,11 +441,12 @@ static irqreturn_t bcl_handle_vbat(int irq, void *data)
 	struct bcl_peripheral_data *perph_data =
 		(struct bcl_peripheral_data *)data;
 	bool irq_enabled = false;
-	
+
 	mutex_lock(&perph_data->state_trans_lock);
 	irq_enabled = perph_data->irq_enabled;
 	mutex_unlock(&perph_data->state_trans_lock);
-	f (irq_enabled)
+
+	if (irq_enabled)
 		of_thermal_handle_trip(perph_data->tz_dev);
 
 	return IRQ_HANDLED;

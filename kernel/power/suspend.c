@@ -277,7 +277,7 @@ static void s2idle_loop(void)
 		error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
 		if (!error) {
 			s2idle_enter();
-			/*
+					/*
 			 * Once we enter s2idle_enter(), returning means that
 			 * either:
 			 * 1) an abort was detected prior to suspending, or
@@ -295,8 +295,7 @@ static void s2idle_loop(void)
 		} else if (error == -EBUSY && pm_wakeup_pending()) {
 			leave_s2idle = true;
 			error = 0;
-			}
-
+}
 		if (!error && s2idle_ops && s2idle_ops->wake)
 			s2idle_ops->wake();
 
@@ -819,11 +818,10 @@ int pm_suspend(suspend_state_t state)
 
 	pm_suspend_marker("entry");
 	pr_info("suspend entry (%s)\n", mem_sleep_labels[state]);
-	
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	start_suspend_mon();
 #endif
-	
+
 	error = enter_state(state);
 
 	qcom_smem_state_update_bits(qstate, AWAKE_BIT, AWAKE_BIT);
@@ -835,11 +833,11 @@ int pm_suspend(suspend_state_t state)
 	} else {
 		suspend_stats.success++;
 	}
-	
+
 #ifdef CONFIG_PM_SLEEP_MONITOR
 	stop_suspend_mon();
-#endif	
-	
+#endif
+
 	pm_suspend_marker("exit");
 	pr_info("suspend exit\n");
 	measure_wake_up_time();
