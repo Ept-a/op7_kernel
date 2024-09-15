@@ -1,26 +1,20 @@
 #!/bin/bash
+
 export ARCH=arm64
-export SUBARCH=arm64
-export CLANG_PATH=~/Git/1/buildtools/clang/bin
-export PATH=${CLANG_PATH}:${PATH}
-export CLANG_TRIPLE=aarch64-linux-gnu-
-export CROSS_COMPILE=~/Git/1/buildtools/clang/bin/aarch64-linux-gnu-
-export CROSS_COMPILE_ARM32=~/Git/1/buildtools/clang/bin/arm-linux-gnueabi-
-export LD_LIBRARY_PATH=~/Git/1/buildtools/clang/lib:$LD_LIBRARY_PATH
-export KBUILD_BUILD_USER=OnePlus
-export KBUILD_BUILD_HOST=7 pro
+export CROSS_COMPILE=~/Git/1/buildtools/tc/tc64/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=~/Git/1/buildtools/tc/tc32/bin/arm-none-eabi-
+export KJOBS="$((`grep -c '^processor' /proc/cpuinfo` * 2))"
 VERSION="$(cat arch/arm64/configs/sm8150-perf_defconfig | grep "CONFIG_LOCALVERSION\=" | sed -r 's/.*"(.+)".*/\1/' | sed 's/^.//')"
 
 echo
 echo "Setting defconfig"
 echo
-# cp defconfig .config
-make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip sm8150-perf_defconfig
+make sm8150-perf_defconfig || exit 1
 
 echo
-echo "Compiling kernel"
+echo "Compiling"
 echo 
-make CC=clang AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) || exit 1
+make -j${KJOBS} || exit 1
 
 echo
 echo "Building Kernel Image"
