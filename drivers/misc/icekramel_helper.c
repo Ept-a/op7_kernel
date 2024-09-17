@@ -12,7 +12,7 @@ static struct ctl_table_header *ops_table_header;
 static int zero = 0, two = 2;
 
 int is_doze = 0;
-unsigned int remove_op_capacity = 0;
+unsigned int remove_op_capacity = 4500000;
 
 static void __do_cpu_updown(bool up)
 {

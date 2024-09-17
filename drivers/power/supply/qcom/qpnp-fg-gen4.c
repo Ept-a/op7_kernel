@@ -4509,12 +4509,28 @@ static int fg_psy_get_property(struct power_supply *psy,
 		break;
 #endif /* CONFIG_REMOVE_OP_CAPACITY */
 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+#ifdef CONFIG_REMOVE_OP_CAPACITY
+		if (!remove_op_capacity) {
 		rc = fg_gen4_get_nominal_capacity(chip, &temp);
 		if (rc)
 			pval->intval = -EINVAL;
 		else
 			pval->intval = (int)temp;
 		break;
+	}else {
+		rc = fg_gen4_get_learned_capacity(chip, &temp);
+			if (!rc)
+				pval->intval = (int)temp;
+			break;
+	}
+#else /* CONFIG_REMOVE_OP_CAPACITY */
+		rc = fg_gen4_get_nominal_capacity(chip, &temp);
+		if (rc)
+			pval->intval = -EINVAL;
+		else
+			pval->intval = (int)temp;
+		break;
+#endif /* CONFIG_REMOVE_OP_CAPACITY */
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		rc = fg_gen4_get_charge_counter(chip, &pval->intval);
 		break;
