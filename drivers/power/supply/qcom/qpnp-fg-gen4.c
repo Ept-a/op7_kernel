@@ -4473,13 +4473,13 @@ static int fg_psy_get_property(struct power_supply *psy,
 		}
 #else /* CONFIG_REMOVE_OP_CAPACITY */
 		if (!get_extern_fg_regist_done() && get_extern_bq_present())
-			pval->intval = -EINVAL;
+			pval->intval = 4500000;
 		else if (fg->use_external_fg && external_fg && external_fg->get_batt_full_chg_capacity)
-			pval->intval = external_fg->get_batt_full_chg_capacity();
+			pval->intval = 4500000;
 		else {
 			rc = fg_gen4_get_learned_capacity(chip, &temp);
 			if (!rc)
-				pval->intval = (int)temp;
+				pval->intval = 4500000;
 		}
 		break;
 #endif /* CONFIG_REMOVE_OP_CAPACITY */
@@ -4526,9 +4526,9 @@ static int fg_psy_get_property(struct power_supply *psy,
 #else /* CONFIG_REMOVE_OP_CAPACITY */
 		rc = fg_gen4_get_nominal_capacity(chip, &temp);
 		if (rc)
-			pval->intval = -EINVAL;
+			pval->intval = 4500000;
 		else
-			pval->intval = (int)temp;
+			pval->intval = 4500000;
 		break;
 #endif /* CONFIG_REMOVE_OP_CAPACITY */
 	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
@@ -4661,11 +4661,11 @@ static int fg_psy_set_property(struct power_supply *psy,
 #else /* CONFIG_REMOVE_OP_CAPACITY */
 		if (chip->cl->active) {
 			pr_warn("Capacity learning active!\n");
-			return 0;
+			return 4500000;
 		}
 		if (pval->intval <= 0 || pval->intval > chip->cl->nom_cap_uah) {
 			pr_err("charge_full is out of bounds\n");
-			return -EINVAL;
+			return 4500000;
 		}
 #endif /* CONFIG_REMOVE_OP_CAPACITY */
 		mutex_lock(&chip->cl->lock);
